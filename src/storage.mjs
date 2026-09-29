@@ -1,4 +1,4 @@
-const STORAGE_KEYS = {
+export const STORAGE_KEYS = {
   PRODUCTS: 'nutrition_tracker_products',
   MEALS: 'nutrition_tracker_meals',
   CONFIG: 'nutrition_tracker_config'
