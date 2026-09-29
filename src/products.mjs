@@ -69,15 +69,15 @@ export function createProductFromScan(name, brand, servingSizeGrams, nutrition, 
  * @returns {Object} The created product
  */
 export function createManualProduct(name, brand, servingSizeGrams, nutrition) {
-  return createProductFromScan(name, brand, servingSizeGrams, nutrition);
+  return createProductFromScan(name, brand, servingSizeGrams, nutrition, undefined);
 }
 
 /**
  * Get a product by its ID.
  *
- * @param {string} id - Product ID
+ * @param {string} productId - Product ID
  * @returns {Object|undefined} The product or undefined
  */
-export function getProductById(id) {
-  return products.get(id);
+export function getProductById(productId) {
+  return products.get(productId);
 }
