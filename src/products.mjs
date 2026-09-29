@@ -1,12 +1,35 @@
-import { v4 as uuidv4 } from 'uuid';
+/**
+ * Products module - create products from scan or manually, get by id.
+ */
 
-// In-memory product store (in production this would use storage.mjs)
+import { calculateNutritionForGrams } from './nutrition.mjs';
+
+/** In-memory product store (in production this would use storage.mjs) */
 const products = new Map();
 
+/** Simple UUID v4 generator without external dependencies */
+function generateId() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+/**
+ * Create a product from scan data.
+ *
+ * @param {string} name - Product name
+ * @param {string} brand - Brand name
+ * @param {number} servingSizeGrams - Serving size in grams
+ * @param {Object} nutrition - Nutrition per 100g
+ * @param {string} [imageUrl] - Base64 image URL (optional)
+ * @returns {Object} The created product
+ */
 export function createProductFromScan(name, brand, servingSizeGrams, nutrition, imageUrl) {
-  const id = uuidv4();
+  const id = generateId();
   const createdAt = new Date().toISOString();
-  
+
   // Calculate nutritionPerServing from nutritionPer100g
   const factor = servingSizeGrams / 100;
   const nutritionPerServing = {
@@ -36,10 +59,25 @@ export function createProductFromScan(name, brand, servingSizeGrams, nutrition, 
   return product;
 }
 
+/**
+ * Create a manual product (same structure as scan but no imageUrl).
+ *
+ * @param {string} name - Product name
+ * @param {string} brand - Brand name
+ * @param {number} servingSizeGrams - Serving size in grams
+ * @param {Object} nutrition - Nutrition per 100g
+ * @returns {Object} The created product
+ */
 export function createManualProduct(name, brand, servingSizeGrams, nutrition) {
   return createProductFromScan(name, brand, servingSizeGrams, nutrition);
 }
 
+/**
+ * Get a product by its ID.
+ *
+ * @param {string} id - Product ID
+ * @returns {Object|undefined} The product or undefined
+ */
 export function getProductById(id) {
   return products.get(id);
 }
