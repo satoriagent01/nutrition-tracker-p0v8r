@@ -3,7 +3,7 @@
  * In production, calls the configured API. For testing, can be mocked.
  */
 
-const DEFAULT_CONFIG = {
+export const DEFAULT_CONFIG = {
   ocrEndpoint: 'https://api.openai.com/v1',
   ocrApiKey: '',
   ocrModel: 'gpt-4o',
@@ -59,35 +59,13 @@ export async function extractNutrition(imageBase64, config) {
 
   // Parse the JSON from the response
   try {
-    // Try to extract JSON from the response text
+    // Try to find JSON in the response content
     const jsonMatch = content.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
-      const parsed = JSON.parse(jsonMatch[0]);
-      return {
-        energyKcal: Number(parsed.energyKcal) || 0,
-        energyKj: Number(parsed.energyKj) || 0,
-        fat: Number(parsed.fat) || 0,
-        saturatedFat: Number(parsed.saturatedFat) || 0,
-        carbohydrates: Number(parsed.carbohydrates) || 0,
-        sugars: Number(parsed.sugars) || 0,
-        fiber: Number(parsed.fiber) || 0,
-        protein: Number(parsed.protein) || 0,
-        salt: Number(parsed.salt) || 0,
-      };
+      return JSON.parse(jsonMatch[0]);
     }
-  } catch {
-    // If parsing fails, return zeros
+    throw new Error('No JSON found in OCR response');
+  } catch (e) {
+    throw new Error(`Failed to parse OCR response: ${e.message}`);
   }
-
-  return {
-    energyKcal: 0,
-    energyKj: 0,
-    fat: 0,
-    saturatedFat: 0,
-    carbohydrates: 0,
-    sugars: 0,
-    fiber: 0,
-    protein: 0,
-    salt: 0,
-  };
 }
