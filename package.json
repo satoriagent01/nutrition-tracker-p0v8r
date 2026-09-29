@@ -1,0 +1,12 @@
+{
+  "name": "nutrition-tracker",
+  "version": "1.0.0",
+  "description": "Free, ad-free nutrition tracker app",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": ["nutrition", "tracker", "health"],
+  "author": "",
+  "license": "MIT"
+}
