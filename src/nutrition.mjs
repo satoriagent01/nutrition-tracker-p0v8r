@@ -1,62 +1,7 @@
-const NUTRIENT_MAP = {
-  // energyKcal
-  'energy': 'energyKcal',
-  'energie': 'energyKcal',
-  'énergie': 'energyKcal',
-  'energia': 'energyKcal',
-  // energyKj
-  'energykj': 'energyKj',
-  'energy kj': 'energyKj',
-  'kilojoule': 'energyKj',
-  'kilojoules': 'energyKj',
-  'kilojoule': 'energyKj',
-  'kj': 'energyKj',
-  // fat
-  'fat': 'fat',
-  'fett': 'fat',
-  'matières grasses': 'fat',
-  'vetten': 'fat',
-  'grassi': 'fat',
-  // saturatedFat
-  'saturated fat': 'saturatedFat',
-  'davon gesättigte fettsäuren': 'saturatedFat',
-  'dont acides gras saturés': 'saturatedFat',
-  'waarvan verzadigde vetzuren': 'saturatedFat',
-  'di cui acidi grassi saturi': 'saturatedFat',
-  'saturated fat': 'saturatedFat',
-  // carbohydrates
-  'carbohydrates': 'carbohydrates',
-  'kohlenhydrate': 'carbohydrates',
-  'glucides': 'carbohydrates',
-  'koolhydraten': 'carbohydrates',
-  'carboidrati': 'carbohydrates',
-  // sugars
-  'sugars': 'sugars',
-  'davon zucker': 'sugars',
-  'dont sucres': 'sugars',
-  'waarvan suikers': 'sugars',
-  'di cui zuccheri': 'sugars',
-  // fiber
-  'fiber': 'fiber',
-  'ballaststoffe': 'fiber',
-  'fibres alimentaires': 'fiber',
-  'vezels': 'fiber',
-  'fibra': 'fiber',
-  'fibres': 'fiber',
-  // protein
-  'protein': 'protein',
-  'eiweiß': 'protein',
-  'protéines': 'protein',
-  'eiwitten': 'protein',
-  'proteine': 'protein',
-  // salt
-  'salt': 'salt',
-  'salz': 'salt',
-  'sel': 'salt',
-  'zout': 'salt',
-  'sale': 'salt',
-};
-
+/**
+ * Calculate nutrition values for a given number of grams,
+ * scaling from per-100g values.
+ */
 export function calculateNutritionForGrams(nutritionPer100g, grams) {
   const factor = grams / 100;
   return {
@@ -72,16 +17,63 @@ export function calculateNutritionForGrams(nutritionPer100g, grams) {
   };
 }
 
+/**
+ * Map of known nutrient name variants (lowercase) to internal field names.
+ */
+const NUTRIENT_MAP = {
+  // German
+  'energie': 'energyKcal',
+  'kilojoule': 'energyKj',
+  'fett': 'fat',
+  'davon gesättigte fettensäuren': 'saturatedFat',
+  'kohlenhydrate': 'carbohydrates',
+  'davon zucker': 'sugars',
+  'ballaststoffe': 'fiber',
+  'eiweiß': 'protein',
+  'salz': 'salt',
+  // French
+  'énergie': 'energyKcal',
+  'matières grasses': 'fat',
+  'dont acides gras saturés': 'saturatedFat',
+  'glucides': 'carbohydrates',
+  'dont sucres': 'sugars',
+  'fibres alimentaires': 'fiber',
+  'protéines': 'protein',
+  'sel': 'salt',
+  // Dutch
+  'energie': 'energyKcal',
+  'vetten': 'fat',
+  'waarvan verzadigde vetzuren': 'saturatedFat',
+  'koolhydraten': 'carbohydrates',
+  'waarvan suikers': 'sugars',
+  'vezels': 'fiber',
+  'eiwitten': 'protein',
+  'zout': 'salt',
+  // Italian
+  'energia': 'energyKcal',
+  'grassi': 'fat',
+  'di cui acidi grassi saturi': 'saturatedFat',
+  'carboidrati': 'carbohydrates',
+  'di cui zuccheri': 'sugars',
+  'fibra': 'fiber',
+  'proteine': 'protein',
+  'sale': 'salt',
+  // English
+  'energy': 'energyKcal',
+  'kilojoules': 'energyKj',
+  'fat': 'fat',
+  'saturated fat': 'saturatedFat',
+  'carbohydrates': 'carbohydrates',
+  'sugars': 'sugars',
+  'fiber': 'fiber',
+  'protein': 'protein',
+  'salt': 'salt',
+};
+
+/**
+ * Normalize a nutrient name from various languages to the internal field name.
+ * Returns '' for unknown nutrient names.
+ */
 export function normalizeNutrientName(name) {
-  const lowerName = name.toLowerCase().trim();
-  if (NUTRIENT_MAP[lowerName]) {
-    return NUTRIENT_MAP[lowerName];
-  }
-  // Try partial matching for compound names
-  for (const [key, value] of Object.entries(NUTRIENT_MAP)) {
-    if (lowerName.includes(key) || key.includes(lowerName)) {
-      return value;
-    }
-  }
-  return lowerName;
+  return NUTRIENT_MAP[name.toLowerCase()] || '';
 }
