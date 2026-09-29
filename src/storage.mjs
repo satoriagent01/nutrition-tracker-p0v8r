@@ -1,8 +1,10 @@
-export const STORAGE_KEYS = {
+const STORAGE_KEYS = {
   PRODUCTS: 'nutrition_tracker_products',
   MEALS: 'nutrition_tracker_meals',
   CONFIG: 'nutrition_tracker_config'
 };
+
+export { STORAGE_KEYS };
 
 export function saveProducts(products) {
   localStorage.setItem(STORAGE_KEYS.PRODUCTS, JSON.stringify(products));
