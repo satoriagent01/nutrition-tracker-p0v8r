@@ -71,9 +71,16 @@ const NUTRIENT_MAP = {
 };
 
 /**
- * Normalize a nutrient name from various languages to the internal field name.
- * Returns '' for unknown nutrient names.
+ * Normalize a nutrient name to the internal field name.
+ *
+ * @param {string} name - Nutrient name (e.g. "Energy", "Fett", "protein")
+ * @returns {string} Normalized field name (e.g. "energyKcal", "fat", "protein")
  */
 export function normalizeNutrientName(name) {
-  return NUTRIENT_MAP[name.toLowerCase()] || '';
+  const lowerName = name.toLowerCase().trim();
+  if (NUTRIENT_MAP[lowerName]) {
+    return NUTRIENT_MAP[lowerName];
+  }
+  // If no mapping found, return the lowercase name as-is
+  return lowerName;
 }
