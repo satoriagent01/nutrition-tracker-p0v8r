@@ -26,6 +26,7 @@ const NUTRIENT_MAP = {
   'kilojoule': 'energyKj',
   'fett': 'fat',
   'davon gesättigte fettensäuren': 'saturatedFat',
+  'davon gesättigte fettsäuren': 'saturatedFat',
   'kohlenhydrate': 'carbohydrates',
   'davon zucker': 'sugars',
   'ballaststoffe': 'fiber',
@@ -72,15 +73,12 @@ const NUTRIENT_MAP = {
 
 /**
  * Normalize a nutrient name to the internal field name.
- *
- * @param {string} name - Nutrient name (e.g. "Energy", "Fett", "protein")
- * @returns {string} Normalized field name (e.g. "energyKcal", "fat", "protein")
+ * Returns empty string for unknown nutrients.
  */
 export function normalizeNutrientName(name) {
-  const lowerName = name.toLowerCase().trim();
+  const lowerName = name.toLowerCase();
   if (NUTRIENT_MAP[lowerName]) {
     return NUTRIENT_MAP[lowerName];
   }
-  // If no mapping found, return the lowercase name as-is
-  return lowerName;
+  return '';
 }
